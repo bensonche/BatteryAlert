@@ -107,4 +107,8 @@ public class MainActivity extends Activity {
 		
 		editor.commit();
 	}
+	
+	public void TestEmail(View view) {
+		String email = ((EditText) findViewById(R.id.txtEmailAddress)).getText().toString();
+	}
 }
