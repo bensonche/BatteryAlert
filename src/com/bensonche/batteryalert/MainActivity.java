@@ -98,13 +98,6 @@ public class MainActivity extends Activity {
 		onOffToggle.setChecked(pref.getBoolean("OnOff", false));
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
 	public void onOffClicked(View view) {
 		SharedPreferences pref = this.getPreferences(MODE_PRIVATE);
 		SharedPreferences.Editor editor = pref.edit();
