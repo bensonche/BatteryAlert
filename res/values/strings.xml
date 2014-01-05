@@ -3,5 +3,11 @@
 
     <string name="app_name">BatteryAlert</string>
     <string name="action_settings">Settings</string>
+    <string-array name="frequencyArray">
+        <item>Every 1 Hour</item>
+        <item>Every 2 Hours</item>
+        <item>Every 4 Hours</item>
+        <item>Every 8 Hours</item>
+    </string-array>
 
 </resources>
