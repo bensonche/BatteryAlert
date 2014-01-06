@@ -3,10 +3,12 @@ package com.bensonche.batteryalert;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.BatteryManager;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -96,9 +98,6 @@ public class MainActivity extends Activity {
 		frequencySpinner.setSelection(pref.getInt("frequency", 2));
 		txtEmailAddress.setText(pref.getString("email", ""));
 		onOffToggle.setChecked(pref.getBoolean("OnOff", false));
-		
-		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-		StrictMode.setThreadPolicy(policy);
 	}
 
 	public void onOffClicked(View view) {
@@ -112,12 +111,21 @@ public class MainActivity extends Activity {
 	}
 	
 	public void TestEmail(View view) {
-		String email = ((EditText) findViewById(R.id.txtEmailAddress)).getText().toString();
+		String address = ((EditText) findViewById(R.id.txtEmailAddress)).getText().toString();
 		
-		new TestEmailTask().execute(email, "%Test email%");
+		new EmailTask().execute(address, "Test email - Battery at " + getBatteryPercent() + "%");
 	}
 	
-	private class TestEmailTask extends AsyncTask<String, Void, String> {
+	private int getBatteryPercent() {
+		IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+		Intent batteryStatus = this.registerReceiver(null, ifilter);
+		int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+		int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+		
+		return Math.round(level / (float) scale * 100);
+	}
+	
+	private class EmailTask extends AsyncTask<String, Void, String> {
 		@Override
 		protected String doInBackground(String... urls) {
 			Email.sendEmail(urls[0], urls[1]);
