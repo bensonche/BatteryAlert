@@ -3,12 +3,11 @@ package com.bensonche.batteryalert;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -96,6 +95,9 @@ public class MainActivity extends Activity {
 		frequencySpinner.setSelection(pref.getInt("frequency", 2));
 		txtEmailAddress.setText(pref.getString("email", ""));
 		onOffToggle.setChecked(pref.getBoolean("OnOff", false));
+		
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+		StrictMode.setThreadPolicy(policy);
 	}
 
 	public void onOffClicked(View view) {
@@ -110,5 +112,7 @@ public class MainActivity extends Activity {
 	
 	public void TestEmail(View view) {
 		String email = ((EditText) findViewById(R.id.txtEmailAddress)).getText().toString();
+		
+		Email.sendEmail(email, "%Test email%");
 	}
 }
