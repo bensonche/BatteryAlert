@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.Editable;
@@ -113,6 +114,20 @@ public class MainActivity extends Activity {
 	public void TestEmail(View view) {
 		String email = ((EditText) findViewById(R.id.txtEmailAddress)).getText().toString();
 		
-		Email.sendEmail(email, "%Test email%");
+		new TestEmailTask().execute(email, "%Test email%");
+	}
+	
+	private class TestEmailTask extends AsyncTask<String, Void, String> {
+		@Override
+		protected String doInBackground(String... urls) {
+			Email.sendEmail(urls[0], urls[1]);
+			
+			return "";
+		}
+		
+		@Override
+		protected void onPostExecute(String result) {
+			
+		}
 	}
 }
